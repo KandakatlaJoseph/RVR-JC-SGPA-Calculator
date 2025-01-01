@@ -1,0 +1,1614 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integrated SGPA Calculator</title>
+    <link rel="stylesheet" href="ST.CSS">
+    <script>
+        const gradePoints = {
+            "A+": 10.0,
+            "A": 9.0,
+            "B": 8.0,
+            "C": 7.0,
+            "D": 6.0,
+            "E": 5.0,
+            "F": 0.0,
+            "W": 0.0
+        };
+
+        const departments = {
+            R20: {
+                CSBS: {
+                    semesters: [
+
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Introductory Topics in Statistics, Probability & Calculus", credits: 3 },
+                                { name: "Fundamentals of Physics", credits: 3 },
+                                { name: "Fundamentals of Computer Science", credits: 3 },
+                                { name: "Principles of Electrical Engineering", credits: 3 },
+                                { name: "Fundamentals of Physics Lab", credits: 1 },
+                                { name: "Principles of Electrical Engineering Lab", credits: 1 },
+                                { name: "Fundamentals of Computer Science Lab", credits: 1 },
+                                { name: "Business Communication & Value Science–I Lab", credits: 1.5 }
+                                // Removed: { name: "Constitution of India", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Linear Algebra", credits: 3 },
+                                { name: "Statistical Methods", credits: 3 },
+                                { name: "Principles of Electronics Engineering", credits: 3 },
+                                { name: "Data Structures & Algorithms", credits: 3 },
+                                { name: "Fundamentals of Economics", credits: 3 },
+                                { name: "Statistical Methods Lab", credits: 1 },
+                                { name: "Principles of Electronics Engineering Lab", credits: 1 },
+                                { name: "Data Structures & Algorithms Lab", credits: 1.5 },
+                                { name: "Business Communication & Value Science – II Lab", credits: 1.5 }
+                                // Removed: { name: "Environmental Science", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Computational Statistics", credits: 3 },
+                                { name: "Computer Organization & Architecture", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Formal Languages & Automata Theory", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Computational Statistics Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 },
+                                { name: "Database Management Systems Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-I", credits: 2 }
+                                // Removed: { name: "Ethics & Human Values", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Operations Research", credits: 3 },
+                                { name: "Introduction to Innovation, IP Management & Entrepreneurship", credits: 3 },
+                                { name: "Design and Analysis of Algorithms", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Business Communication & Value Science - III Lab", credits: 1.5 },
+                                { name: "Design and Analysis of Algorithms Lab", credits: 1.5 },
+                                { name: "Operating Systems & Software Engineering Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-II", credits: 2 }
+                                // Removed: { name: "Design Thinking", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Fundamentals of Management", credits: 3 },
+                                { name: "Artificial Intelligence", credits: 3 },
+                                { name: "Software Design with UML", credits: 3 },
+                                { name: "Professional Elective - I", credits: 3 },
+                                { name: "Open/Job Oriented Elective I", credits: 3 },
+                                { name: "Professional Elective - I Lab", credits: 1.5 },
+                                { name: "Mini Project", credits: 2 },
+                                { name: "Summer Internship", credits: 1.5 }
+                                // Removed: { name: "Business Strategy", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Financial & Cost Accounting", credits: 2 },
+                                { name: "Compiler Design", credits: 3 },
+                                { name: "Computer Networks", credits: 3 },
+                                { name: "Information Security", credits: 3 },
+                                { name: "Professional Elective - II", credits: 3 },
+                                { name: "Open/Job Oriented Elective II", credits: 3 },
+                                { name: "Computer Networks & Information Security Lab", credits: 1 },
+                                { name: "Professional Elective - II Lab", credits: 1 },
+                                { name: "Skill Oriented Course - IV", credits: 2 }
+                                // Removed: { name: "Marketing Research and Marketing Management", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Financial & Human Resource Management", credits: 2 },
+                                { name: "Usability Design of Software Applications", credits: 3 },
+                                { name: "IT Project Management", credits: 3 },
+                                { name: "MOOCS", credits: 3 },
+                                { name: "Advanced Social, Text and Media Analytics", credits: 3 },
+                                { name: "MOOCS", credits: 3 },
+                                { name: "Internship/Certification", credits: 1 },
+                                { name: "IT Project Management Lab", credits: 3 },
+                                { name: "Deep Learning", credits: 2 }
+                                // Removed: { name: "Services Science & Service Operational Management", credits: 0 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+                ECE: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics-I", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Circuit Theory", credits: 3 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1 },
+                                { name: "Engineering Workshop Practice Lab", credits: 3 },
+                                { name: "Introduction to Python Programming Lab", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics-II", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "Electronic Devices", credits: 3 },
+                                { name: "Programming for Problem Solving", credits: 3 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "Programming for Problem Solving Lab", credits: 2 },
+                                { name: "Engineering Graphics & Design Lab", credits: 3 },
+                                { name: "Electronic Devices Lab", credits: 1 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Mathematics-III", credits: 3 },
+                                { name: "Data Structures using Python", credits: 4 },
+                                { name: "Digital Electronics & Logic Design", credits: 3 },
+                                { name: "Signals & Systems", credits: 3 },
+                                { name: "Analog Circuits", credits: 3 },
+                                { name: "Data Structures using Python Lab", credits: 1 },
+                                { name: "Digital Electronics & Logic Design Lab", credits: 1.5 },
+                                { name: "Signals & Systems Lab", credits: 1 },
+                                { name: "Skill Oriented Course-I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Electromagnetic Fields & Transmission Lines", credits: 3 },
+                                { name: "Analog Communication", credits: 3 },
+                                { name: "Digital Signal Processing", credits: 4 },
+                                { name: "Microprocessor & Microcontroller", credits: 3 },
+                                { name: "Economics for Engineers", credits: 3 },
+                                { name: "Analog Circuits Lab", credits: 1.5 },
+                                { name: "Digital Signal Processing Lab", credits: 1 },
+                                { name: "Microprocessor & Microcontroller Lab", credits: 1 },
+                                { name: "Skill Oriented Course-II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Antennas & Wave Propagation", credits: 3 },
+                                { name: "VLSI Design", credits: 3 },
+                                { name: "Digital Communication", credits: 3 },
+                                { name: "Professional Elective-I", credits: 3 },
+                                { name: "Open / Job-Oriented Elective-I", credits: 3 },
+                                { name: "Analog & Digital Communication Lab", credits: 1.5 },
+                                { name: "HDL Programming Lab", credits: 2 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course-III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Integrated Circuits & Applications", credits: 3 },
+                                { name: "Microwave Engineering", credits: 3 },
+                                { name: "Digital Image Processing", credits: 3 },
+                                { name: "Professional Elective-II", credits: 3 },
+                                { name: "Open / Job-Oriented Elective-II", credits: 3 },
+                                { name: "Integrated Circuits & Applications Lab", credits: 1.5 },
+                                { name: "Advanced Communication Lab", credits: 1.5 },
+                                { name: "Embedded Systems Lab", credits: 1 },
+                                { name: "Skill Oriented Course-IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities Elective", credits: 3 },
+                                { name: "Professional Elective-III", credits: 3 },
+                                { name: "Professional Elective-IV", credits: 3 },
+                                { name: "Professional Elective-V (MOOC)", credits: 3 },
+                                { name: "Open / Job-Oriented Elective-III", credits: 3 },
+                                { name: "Open / Job-Oriented Elective-IV (MOOC)", credits: 3 },
+                                { name: "Internship / Certification", credits: 3 },
+                                { name: "Skill Oriented Course-V", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project Work, Seminar and Internship in Industry", credits: 12 }
+                            ]
+                        }
+
+                    ]
+                },
+                CSE: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Basic Electrical & Electronics Engineering", credits: 3 },
+                                { name: "Programming for Problem Solving", credits: 3 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Basic Electrical & Electronics Engineering Lab", credits: 1.5 },
+                                { name: "Engineering Graphics and Design Lab", credits: 3 },
+                                { name: "Programming for Problem Solving Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Programming in Python", credits: 2 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "Programming in Python Lab", credits: 1 },
+                                { name: "Computer Engineering Workshop", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Probability and Statistics", credits: 3 },
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Computer Organization", credits: 3 },
+                                { name: "Data Structures", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Probability and Statistics with R Lab", credits: 1.5 },
+                                { name: "Data Structures Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Computational Statistics", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Web Technologies", credits: 3 },
+                                { name: "Computational Statistics Lab", credits: 1.5 },
+                                { name: "Database Management Systems Lab", credits: 1.5 },
+                                { name: "Web Technologies Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Automata Theory & Formal Languages", credits: 3 },
+                                { name: "Computer Networks", credits: 3 },
+                                { name: "Design & Analysis of Algorithms", credits: 3 },
+                                { name: "Professional Elective - I", credits: 3 },
+                                { name: "Open / Job-oriented Elective - I", credits: 3 },
+                                { name: "Design & Analysis of Algorithms Lab", credits: 1.5 },
+                                { name: "Data Analysis Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Artificial Intelligence", credits: 3 },
+                                { name: "Cryptography & Network Security", credits: 3 },
+                                { name: "Machine Learning", credits: 3 },
+                                { name: "Professional Elective - II", credits: 3 },
+                                { name: "Open / Job-oriented Elective - II", credits: 3 },
+                                { name: "Artificial Intelligence Lab", credits: 1.5 },
+                                { name: "Machine Learning Lab", credits: 1.5 },
+                                { name: "Term Paper", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities and Social Sciences Elective", credits: 3 },
+                                { name: "Professional Elective - III", credits: 3 },
+                                { name: "Professional Elective - IV", credits: 3 },
+                                { name: "Professional Elective - V (MOOCS)", credits: 3 },
+                                { name: "Open / Job-oriented Elective - III", credits: 3 },
+                                { name: "Open / Job-oriented Elective - IV (MOOCS)", credits: 3 },
+                                { name: "Internship / Professional Certification", credits: 3 }
+                            ]
+                        }
+                    ]
+                },
+                CSM: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Fundamentals of Computer Science", credits: 3 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 },
+                                { name: "Engineering Graphics and Design Lab", credits: 3 },
+                                { name: "Fundamentals of Computer Science Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "Data Structures & Algorithms", credits: 3 },
+                                { name: "Programming in Python", credits: 2 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Technical Communication & Value Science Lab", credits: 1.5 },
+                                { name: "Data Structures & Algorithms Lab", credits: 1.5 },
+                                { name: "Programming in Python Lab", credits: 1 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Probability and Statistics", credits: 3 },
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Computer Organization", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Probability and Statistics Lab", credits: 1.5 },
+                                { name: "Database Management System Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Computational Statistics", credits: 3 },
+                                { name: "Artificial Intelligence", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Design and Analysis of Algorithms", credits: 3 },
+                                { name: "Computational Statistics Lab", credits: 1.5 },
+                                { name: "Artificial Intelligence Lab", credits: 1.5 },
+                                { name: "Design and Analysis of Algorithms Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Automata Theory & Formal Languages", credits: 3 },
+                                { name: "Computer Networks", credits: 3 },
+                                { name: "Data and Visual Analytics in AI", credits: 3 },
+                                { name: "Professional Elective I", credits: 3 },
+                                { name: "Open/Job-Oriented Elective I", credits: 3 },
+                                { name: "Data and Visual Analytics in AI Lab", credits: 1.5 },
+                                { name: "Professional Elective Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Natural Language Processing", credits: 3 },
+                                { name: "Machine Learning", credits: 3 },
+                                { name: "Soft Computing", credits: 3 },
+                                { name: "Professional Elective  II", credits: 3 },
+                                { name: "Open/Job-Oriented Elective  II", credits: 3 },
+                                { name: "Natural Language Processing Lab", credits: 1.5 },
+                                { name: "Machine Learning Lab", credits: 1.5 },
+                                { name: "Term Paper / Seminar", credits: 1.5 },
+                                { name: "Skill Oriented Course  IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities & Social Sciences Elective", credits: 3 },
+                                { name: "Professional Elective  III", credits: 3 },
+                                { name: "Professional Elective  IV", credits: 3 },
+                                { name: "Professional Elective  V (MOOCS)", credits: 3 },
+                                { name: "Open/Job-Oriented Elective  III", credits: 3 },
+                                { name: "Open Elective  IV (MOOCS)", credits: 3 },
+                                { name: "Industrial Internship / Professional Certification", credits: 3 },
+                                { name: "Skill Oriented Course  V", credits: 2 }
+                            ]
+                        }
+                    ]
+                },
+
+                CSD: {
+                    semesters: [
+
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Fundamentals of Computer Science", credits: 3 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 },
+                                { name: "Engineering Graphics and Design Lab", credits: 3 },
+                                { name: "Fundamentals of Computer Science Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Probability and Statistics", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "Data Structures & Algorithms", credits: 3 },
+                                { name: "Python for Data Science", credits: 2 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Data Analytics Lab (R-Language)", credits: 1 },
+                                { name: "Data Structures & Algorithms Lab", credits: 1.5 },
+                                { name: "Python for Data Science Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Mathematics-II", credits: 3 },
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Computer Organization", credits: 3 },
+                                { name: "Data Visualization", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Business Communication & Value Science Lab", credits: 1.5 },
+                                { name: "Data Visualization Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Foundations of Artificial Intelligence", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Design and Analysis of Algorithms", credits: 3 },
+                                { name: "Database Management Systems Lab", credits: 1.5 },
+                                { name: "Operating Systems & Software Engineering Lab", credits: 1.5 },
+                                { name: "Design and Analysis of Algorithms Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Automata and Compiler Design", credits: 3 },
+                                { name: "Data Communications and Networking", credits: 3 },
+                                { name: "Machine Learning", credits: 3 },
+                                { name: "Professional Elective-I", credits: 3 },
+                                { name: "Open/Job Oriented Elective-I", credits: 3 },
+                                { name: "Machine Learning Lab", credits: 1.5 },
+                                { name: "Professional Elective-I Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course-III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Operations Research", credits: 3 },
+                                { name: "Cryptography and Network Security", credits: 3 },
+                                { name: "Deep Learning", credits: 3 },
+                                { name: "Professional Elective-II", credits: 3 },
+                                { name: "Open/Job Oriented Elective-II", credits: 3 },
+                                { name: "Deep Learning Lab", credits: 1.5 },
+                                { name: "Professional Elective Lab-II", credits: 1.5 },
+                                { name: "Project-I", credits: 1.5 },
+                                { name: "Skill Oriented Course-IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities Elective", credits: 3 },
+                                { name: "Professional Elective-III", credits: 3 },
+                                { name: "Professional Elective-IV", credits: 3 },
+                                { name: "Professional Elective-V (MOOCS)", credits: 3 },
+                                { name: "Open/Job Oriented Elective-III", credits: 3 },
+                                { name: "Open/Job Oriented Elective-IV (MOOCS)", credits: 3 },
+                                { name: "Internship/Certification", credits: 3 },
+                                { name: "Skill Oriented Course-V", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project-II", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+                EEE: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Basic Civil and Mechanical Engineering", credits: 3 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 },
+                                { name: "Engineering Workshop Practice Lab", credits: 3 },
+                                { name: "Basic Civil & Mechanical Engineering Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Electrical Circuits", credits: 3 },
+                                { name: "Programming for Problem Solving", credits: 3 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                { name: "Engineering Graphics & Design Lab", credits: 3 },
+                                { name: "Electrical Circuits Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Mathematics – III", credits: 3 },
+                                { name: "Electrical Circuit Analysis", credits: 3 },
+                                { name: "Electronic Devices & Circuits", credits: 3 },
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "DC Machines", credits: 3 },
+                                { name: "DC Machines Lab", credits: 1.5 },
+                                { name: "Electronic Devices & Digital Electronics Lab", credits: 1.5 },
+                                { name: "Electrical & Electronics Circuits Simulation Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course – I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Data Structures using C++", credits: 3 },
+                                { name: "Generation & Transmission of Electrical Power", credits: 3 },
+                                { name: "Electromagnetic Field Theory", credits: 3 },
+                                { name: "Electronic Circuits Analysis", credits: 3 },
+                                { name: "AC Machines", credits: 3 },
+                                { name: "Data Structures Lab", credits: 1.5 },
+                                { name: "AC Machines Lab", credits: 1.5 },
+                                { name: "Pulse & Digital Circuits Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course – II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Control Systems", credits: 3 },
+                                { name: "Synchronous & Special Electrical Machines", credits: 3 },
+                                { name: "Microprocessors & Microcontrollers", credits: 3 },
+                                { name: "Professional Elective – I", credits: 3 },
+                                { name: "Open/Job-Oriented Elective – I", credits: 3 },
+                                { name: "Synchronous & Special Electrical Machines Lab", credits: 1.5 },
+                                { name: "Control Systems Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course – III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Renewable Energy Resources", credits: 2 },
+                                { name: "Power System Analysis", credits: 3 },
+                                { name: "Power Electronics", credits: 3 },
+                                { name: "Professional Elective – II", credits: 3 },
+                                { name: "Open/Job-Oriented Elective – II", credits: 3 },
+                                { name: "Electrical Measurements & Instrumentation Lab", credits: 3 },
+                                { name: "Power Electronics Lab", credits: 1.5 },
+                                { name: "Power Systems Lab", credits: 1 },
+                                { name: "Skill Oriented Course – IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities and Social Science Elective", credits: 3 },
+                                { name: "Professional Elective – III", credits: 3 },
+                                { name: "Professional Elective – IV", credits: 3 },
+                                { name: "Professional Elective – V (MOOCS)", credits: 3 },
+                                { name: "Open/Job-Oriented Elective – III", credits: 3 },
+                                { name: "Open/Job-Oriented Elective – IV (MOOCS)", credits: 3 },
+                                { name: "Internship/Certification", credits: 3 },
+                                { name: "Skill Oriented Course – V", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project Work & Internship in Industry", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+                IOT: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Fundamentals of Computer Science", credits: 3 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 },
+                                { name: "Engineering Graphics and Design Lab", credits: 3 },
+                                { name: "Fundamentals of Computer Science Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Basic Electrical & Electronics Engineering", credits: 3 },
+                                { name: "Data Structures & Algorithms", credits: 3 },
+                                { name: "Programming in Python", credits: 2 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Basic Electrical & Electronics Engineering Lab", credits: 1 },
+                                { name: "Data Structures & Algorithms Lab", credits: 1.5 },
+                                { name: "Programming in Python Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Computer Organization & Micro Processors", credits: 3 },
+                                { name: "Fundamentals of Internet of Things", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Technical Communication & Value Science Lab", credits: 1.5 },
+                                { name: "Fundamentals of Internet of Things Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-I (Web Development)", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Probability & Statistics", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "IoT Architecture & Protocols", credits: 3 },
+                                { name: "Computer Networks", credits: 3 },
+                                { name: "Probability & Statistics Lab", credits: 1.5 },
+                                { name: "Database Management Systems Lab", credits: 1.5 },
+                                { name: "Operating Systems Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course-II (Scripting Languages)", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Automata Theory & Formal Languages", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Design and Analysis of Algorithms", credits: 3 },
+                                { name: "Professional Elective-I (IoT with Cloud Computing)", credits: 3 },
+                                { name: "Open/Job Oriented Elective-I (Artificial Intelligence)", credits: 3 },
+                                { name: "Software Computing Lab", credits: 1.5 },
+                                { name: "IoT with Cloud Computing Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course-III (Soft Skills)", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Wireless Sensor Networks", credits: 3 },
+                                { name: "Compiler Design", credits: 3 },
+                                { name: "Industrial IoT", credits: 3 },
+                                { name: "Professional Elective-II (Data Science for IoT)", credits: 3 },
+                                { name: "Open/Job Oriented Elective-II (Ethical Hacking)", credits: 3 },
+                                { name: "Wireless Sensor Networks Lab", credits: 1.5 },
+                                { name: "Industrial IoT Lab", credits: 1.5 },
+                                { name: "Term Paper / Seminar", credits: 1.5 },
+                                { name: "Skill Oriented Course-IV (Mobile App Development)", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities & Social Sciences Elective", credits: 3 },
+                                { name: "Professional Elective-III (Neural Networks)", credits: 3 },
+                                { name: "Professional Elective-IV (Big Data Analytics)", credits: 3 },
+                                { name: "Professional Elective-V (MOOCS)", credits: 3 },
+                                { name: "Open/Job Oriented Elective-III (Blockchain Technologies)", credits: 3 },
+                                { name: "Open/Job Oriented Elective-IV (MOOCS)", credits: 3 },
+                                { name: "Industrial Internship / Professional Certification", credits: 3 },
+                                { name: "Skill Oriented Course-V (Computer Vision)", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project Work (Project Work, Seminar and Internship)", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+                MECH: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Programming for Problem Solving", credits: 3 },
+                                { name: "Chemistry Lab", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 },
+                                { name: "Engineering Workshop Practice Lab", credits: 3 },
+                                { name: "Programming for Problem Solving Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                { name: "Engineering Mechanics", credits: 3 },
+                                { name: "Engineering Graphics", credits: 3 },
+                                { name: "Physics Lab", credits: 1.5 },
+                                { name: "Computer Aided Geometrical Modeling Lab", credits: 1.5 },
+                                { name: "Basic Electrical and Electronics Engineering Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Operations Management", credits: 3 },
+                                { name: "Material Science & Metallurgy", credits: 3 },
+                                { name: "Manufacturing Processes", credits: 3 },
+                                { name: "Basic Thermodynamics", credits: 3 },
+                                { name: "Theory of Mechanisms & Machines", credits: 3 },
+                                { name: "Machine Drawing Lab", credits: 1.5 },
+                                { name: "Modeling Lab", credits: 1.5 },
+                                { name: "Advanced Programming Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Mathematics – III", credits: 3 },
+                                { name: "Applied Thermodynamics", credits: 3 },
+                                { name: "Strength of Materials", credits: 3 },
+                                { name: "Manufacturing Technology", credits: 3 },
+                                { name: "Fluid Mechanics & Hydraulic Machines", credits: 3 },
+                                { name: "Manufacturing Process Lab", credits: 1.5 },
+                                { name: "FM & SM Lab", credits: 1.5 },
+                                { name: "Communicative English Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Design of Machine Elements", credits: 3 },
+                                { name: "Metrology & Measurements", credits: 3 },
+                                { name: "Machine Dynamics and Vibrations", credits: 3 },
+                                { name: "Professional Elective - I", credits: 3 },
+                                { name: "Open / Job-Oriented Elective - I", credits: 3 },
+                                { name: "CAM Lab", credits: 1.5 },
+                                { name: "Thermal Engineering Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course - III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Design of Transmission Elements", credits: 3 },
+                                { name: "Operations Research", credits: 3 },
+                                { name: "Heat Transfer", credits: 3 },
+                                { name: "Professional Elective - II", credits: 3 },
+                                { name: "Open / Job-Oriented Elective - II", credits: 3 },
+                                { name: "Design & Metrology Lab", credits: 1.5 },
+                                { name: "Heat Transfer Lab", credits: 1.5 },
+                                { name: "Analysis Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities Elective", credits: 3 },
+                                { name: "Professional Elective - III", credits: 3 },
+                                { name: "Professional Elective - IV", credits: 3 },
+                                { name: "Professional Elective - V (MOOCS)", credits: 3 },
+                                { name: "Open / Job-Oriented Elective - III", credits: 3 },
+                                { name: "Open / Job-Oriented Elective - IV (MOOCS)", credits: 3 },
+                                { name: "Internship / Certification", credits: 3 },
+                                { name: "Skill Oriented Course - V", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project Work, Seminar and Internship", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+
+                IT: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Mathematics – I", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Basic Electrical & Electronics Engineering", credits: 3 },
+                                { name: "Programming for Problem Solving", credits: 3 },
+                                { name: "Engineering Physics Lab", credits: 1.5 },
+                                { name: "Basic Electrical & Electronics Engineering Lab", credits: 1.5 },
+                                { name: "Engineering Graphics and Design Lab", credits: 3 },
+                                { name: "Programming for Problem Solving Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Mathematics – II", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "Digital Electronics", credits: 3 },
+                                { name: "English for Communication Skills", credits: 3 },
+                                { name: "Programming in Python", credits: 2 },
+                                { name: "Engineering Chemistry Lab", credits: 1.5 },
+                                { name: "Programming in Python Lab", credits: 1 },
+                                { name: "Computer Engineering Workshop", credits: 1.5 },
+                                { name: "English Language Communication Skills Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Probability and Statistics", credits: 3 },
+                                { name: "Discrete Mathematics", credits: 3 },
+                                { name: "Computer Organization", credits: 3 },
+                                { name: "Data Structures", credits: 3 },
+                                { name: "Object Oriented Programming", credits: 3 },
+                                { name: "Probability and Statistics Lab", credits: 1.5 },
+                                { name: "Data Structures Lab", credits: 1.5 },
+                                { name: "Object Oriented Programming Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - I", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Computational Statistics", credits: 3 },
+                                { name: "Database Management Systems", credits: 3 },
+                                { name: "Operating Systems", credits: 3 },
+                                { name: "Software Engineering", credits: 3 },
+                                { name: "Web Technologies", credits: 3 },
+                                { name: "Computational Statistics Lab", credits: 1.5 },
+                                { name: "Database Management Systems Lab", credits: 1.5 },
+                                { name: "Web Technologies Lab", credits: 1.5 },
+                                { name: "Skill Oriented Course - II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Automata Theory & Formal Languages", credits: 3 },
+                                { name: "Computer Networks", credits: 3 },
+                                { name: "Design & Analysis of Algorithms", credits: 3 },
+                                { name: "Professional Elective - I", credits: 3 },
+                                { name: "Open / Job Oriented Elective - I", credits: 3 },
+                                { name: "Design & Analysis of Algorithms Lab", credits: 1.5 },
+                                { name: "Data Analysis Lab", credits: 1.5 },
+                                { name: "Summer Internship", credits: 1.5 },
+                                { name: "Skill Oriented Course - III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Artificial Intelligence", credits: 3 },
+                                { name: "Cryptography & Network Security", credits: 3 },
+                                { name: "Machine Learning", credits: 3 },
+                                { name: "Professional Elective - II", credits: 3 },
+                                { name: "Open / Job Oriented Elective - II", credits: 3 },
+                                { name: "Artificial Intelligence Lab", credits: 1.5 },
+                                { name: "Machine Learning Lab", credits: 1.5 },
+                                { name: "Term Paper", credits: 1.5 },
+                                { name: "Skill Oriented Course - IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Humanities Elective", credits: 3 },
+                                { name: "Professional Elective - III", credits: 3 },
+                                { name: "Professional Elective - IV", credits: 3 },
+                                { name: "Professional Elective - V (MOOCS)", credits: 3 },
+                                { name: "Open / Job Oriented Elective - III", credits: 3 },
+                                { name: "Open / Job Oriented Elective - IV (MOOCS)", credits: 3 },
+                                { name: "Internship / Certification", credits: 3 },
+                                { name: "Skill Oriented Course - V", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Project Work, Seminar and Internship", credits: 12 }
+                            ]
+                        }
+                    ]
+                },
+                CIVIL: {
+                    semesters: [
+                        {
+                            name: "Semester 1",
+                            courses: [
+                                { name: "Engineering Mathematics I", credits: 3 },
+                                { name: "Engineering Physics", credits: 3 },
+                                { name: "Engineering Chemistry", credits: 3 },
+                                { name: "Basic Civil Engineering", credits: 3 },
+                                { name: "Engineering Mechanics", credits: 3 },
+                                { name: "Computer Programming", credits: 3 },
+                                { name: "Engineering Graphics", credits: 2 },
+                                { name: "Workshop Practice", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 2",
+                            courses: [
+                                { name: "Engineering Mathematics II", credits: 3 },
+                                { name: "Fluid Mechanics", credits: 3 },
+                                { name: "Strength of Materials", credits: 3 },
+                                { name: "Surveying", credits: 3 },
+                                { name: "Concrete Technology", credits: 3 },
+                                { name: "Environmental Engineering", credits: 3 },
+                                { name: "Geology for Civil Engineers", credits: 2 },
+                                { name: "Civil Engineering Lab", credits: 1.5 }
+                            ]
+                        },
+                        {
+                            name: "Semester 3",
+                            courses: [
+                                { name: "Structural Analysis", credits: 3 },
+                                { name: "Soil Mechanics", credits: 3 },
+                                { name: "Transportation Engineering", credits: 3 },
+                                { name: "Design of Concrete Structures", credits: 3 },
+                                { name: "Construction Management", credits: 3 },
+                                { name: "Surveying Lab", credits: 1.5 },
+                                { name: "Soil Mechanics Lab", credits: 1.5 },
+                                { name: "Technical Communication", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 4",
+                            courses: [
+                                { name: "Design of Steel Structures", credits: 3 },
+                                { name: "Water Resources Engineering", credits: 3 },
+                                { name: "Foundation Engineering", credits: 3 },
+                                { name: "Project Management", credits: 3 },
+                                { name: "Engineering Economics", credits: 3 },
+                                { name: "Environmental Engineering Lab", credits: 1.5 },
+                                { name: "Concrete Structures Lab", credits: 1.5 },
+                                { name: "Skill Development Course", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 5",
+                            courses: [
+                                { name: "Advanced Structural Analysis", credits: 3 },
+                                { name: "Earthquake Engineering", credits: 3 },
+                                { name: "Pavement Design", credits: 3 },
+                                { name: "Construction Technology", credits: 3 },
+                                { name: "Professional Elective I", credits: 3 },
+                                { name: "Project Work", credits: 2 },
+                                { name: "Internship", credits: 1.5 },
+                                { name: "Skill Development Course II", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 6",
+                            courses: [
+                                { name: "Bridge Engineering", credits: 3 },
+                                { name: "Urban Planning", credits: 3 },
+                                { name: "Advanced Soil Mechanics", credits: 3 },
+                                { name: "Professional                     Elective II", credits: 3 },
+                                { name: "Open Elective", credits: 3 },
+                                { name: "Bridge Engineering Lab", credits: 1.5 },
+                                { name: "Urban Planning Lab", credits: 1.5 },
+                                { name: "Skill Development Course III", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 7",
+                            courses: [
+                                { name: "Project Management and Finance", credits: 3 },
+                                { name: "Professional Elective III", credits: 3 },
+                                { name: "Professional Elective IV", credits: 3 },
+                                { name: "Industrial Training", credits: 3 },
+                                { name: "Open Elective II", credits: 3 },
+                                { name: "Research Project", credits: 3 },
+                                { name: "Skill Development Course IV", credits: 2 }
+                            ]
+                        },
+                        {
+                            name: "Semester 8",
+                            courses: [
+                                { name: "Capstone Project", credits: 4 },
+                                { name: "Professional Elective V", credits: 3 },
+                                { name: "Open Elective III", credits: 3 },
+                                { name: "Comprehensive Viva", credits: 2 },
+                                { name: "Skill Development Course V", credits: 2 }
+                            ]
+                        },]
+
+                },},
+                R24: {
+                    CSM: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra, Calculus and Differential Equations", credits: 3 },
+                                    { name: "Chemistry for Engineers", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Chemistry Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 2 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Integral Calculus and Transforms", credits: 3 },
+                                    { name: "Applied Physics", credits: 3 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Digital Logic Design", credits: 3 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Data Structures", credits: 3 },
+                                    { name: "Applied Physics Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Python Programming Lab", credits: 1 },
+                                    { name: "Data Structures Lab", credits: 1.5 },
+                                    { name: "NSS / NCC / Community Service", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    CSE: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra, Calculus and Differential Equations", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 2 },
+                                    { name: "NSS / NCC / Community Service", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Integral Calculus and Transforms", credits: 3 },
+                                    { name: "Engineering Chemistry", credits: 2 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Digital Logic Design", credits: 3 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Data Structures", credits: 4 },
+                                    { name: "Engineering Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Python Programming Lab", credits: 1 },
+                                    { name: "Data Structures Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    CSBS: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Discrete Mathematics", credits: 3 },
+                                    { name: "Fundamentals of Physics", credits: 3 },
+                                    { name: "Principles of Electrical Engineering", credits: 3 },
+                                    { name: "Fundamentals of Computer Science", credits: 3 },
+                                    { name: "Introductory Topics in Statistics, Probability and Calculus", credits: 2 },
+                                    { name: "Fundamentals of Physics Lab", credits: 1 },
+                                    { name: "Principles of Electrical Engineering Lab", credits: 1 },
+                                    { name: "Fundamentals of Computer Science Lab", credits: 1.5 },
+                                    { name: "Business Communication and Value Science-I Lab", credits: 1 },
+                                    { name: "NSS / NCC / Community Service", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Linear Algebra", credits: 3 },
+                                    { name: "Statistical Methods", credits: 3 },
+                                    { name: "Fundamentals of Economics", credits: 2 },
+                                    { name: "Principles of Electronics Engineering", credits: 3 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Data Structures and Algorithms", credits: 3 },
+                                    { name: "Statistical Methods Lab", credits: 1 },
+                                    { name: "Business Communication and Value Science-II Lab", credits: 1 },
+                                    { name: "Python Programming Lab", credits: 1 },
+                                    { name: "Data Structures and Algorithms Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    CSD: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra, Calculus and Differential Equations", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 2 },
+                                    { name: "NSS / NCC / Community Service", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Integral Calculus and Transforms", credits: 3 },
+                                    { name: "Engineering Chemistry", credits: 2 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Digital Logic Design", credits: 3 },
+                                    { name: "Python for Data Science", credits: 2 },
+                                    { name: "Data Structures", credits: 4 },
+                                    { name: "Engineering Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Python for Data Science Lab", credits: 1 },
+                                    { name: "Data Structures Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    IOT: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra, Calculus and Differential Equations", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 2 },
+                                    { name: "NSS / NCC / Community Service", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Integral Calculus and Transforms", credits: 3 },
+                                    { name: "Engineering Chemistry", credits: 2 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Digital Logic Design", credits: 3 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Data Structures", credits: 4 },
+                                    { name: "Engineering Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Python Programming Lab", credits: 1 },
+                                    { name: "Data Structures Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    ECE: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra and Calculus", credits: 3 },
+                                    { name: "Chemistry for Engineers", credits: 3 },
+                                    { name: "Basic Civil and Mechanical Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Differential Equations, Transforms and Vector Calculus", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Basic Electrical Circuits and Electronic Devices", credits: 4 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical Circuits and Electronic Devices Lab", credits: 1.5 },
+                                    { name: "Python Programming Lab", credits: 1.5 },
+                                    { name: "Engineering Workshop", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 3 }
+                                ]
+                            },
+                            {
+                                name: "Semester 3",
+                                courses: [
+                                    { name: "Numerical Methods, Probability and Statistics", credits: 3 },
+                                    { name: "Data Structures using Python", credits: 3 },
+                                    { name: "Digital Electronics and Logic Design", credits: 3 },
+                                    { name: "Signals and Systems", credits: 3 },
+                                    { name: "Analog Circuits", credits: 3 },
+                                    { name: "Data Structures using Python Lab", credits: 1 },
+                                    { name: "Digital Electronics and Logic Design Lab", credits: 1.5 },
+                                    { name: "Design Thinking and Innovation", credits: 2 },
+                                    { name: "Skill Enhancement Course-1", credits: 1 }
+                                ]
+                            },
+                            {
+                                name: "Semester 4",
+                                courses: [
+                                    { name: "Economics for Engineers", credits: 2 },
+                                    { name: "Universal Human Values", credits: 2 },
+                                    { name: "Digital Signal Processing", credits: 3 },
+                                    { name: "Microcontrollers", credits: 3 },
+                                    { name: "Analog Communication", credits: 3 },
+                                    { name: "Electromagnetic Fields and Transmission Lines", credits: 3 },
+                                    { name: "Analog Circuits Lab", credits: 1.5 },
+                                    { name: "Digital Signal Processing Lab", credits: 1 }
+                                ]
+                            },
+                            {
+                                name: "Semester 5",
+                                courses: [
+                                    { name: "Digital Communication", credits: 3 },
+                                    { name: "VLSI Design", credits: 3 },
+                                    { name: "Professional Elective-I", credits: 3 },
+                                    { name: "Open Elective-I", credits: 3 },
+                                    { name: "Open Elective-II", credits: 3 },
+                                    { name: "Analog and Digital Communication Lab", credits: 1.5 },
+                                    { name: "Embedded Systems Lab", credits: 1 },
+                                    { name: "Tinkering Lab", credits: 1 },
+                                    { name: "Summer Internship-1", credits: 1 },
+                                    { name: "Skill Enhancement Course-4", credits: 1 },
+                                    { name: "Skill Enhancement Course-5", credits: 2 }
+                                ]
+                            },
+                            {
+                                name: "Semester 6",
+                                courses: [
+                                    { name: "Integrated Circuits and Applications", credits: 3 },
+                                    { name: "HDL Programming", credits: 3 },
+                                    { name: "Digital Image Processing", credits: 3 },
+                                    { name: "Professional Elective-II", credits: 3 },
+                                    { name: "Professional Elective-III", credits: 3 },
+                                    { name: "Open Elective-III", credits: 3 },
+                                    { name: "IC Applications Lab", credits: 1.5 },
+                                    { name: "HDL Programming Lab", credits: 1 },
+                                    { name: "Skill Enhancement Course-6", credits: 1 }
+                                ]
+                            },
+                            {
+                                name: "Semester 7",
+                                courses: [
+                                    { name: "Industrial Management and Entrepreneurship", credits: 2 },
+                                    { name: "Microwave Engineering", credits: 3 },
+                                    { name: "Antennas and Wave Propagation", credits: 3 },
+                                    { name: "Professional Elective-IV", credits: 3 },
+                                    { name: "Professional Elective-V (MOOCs)", credits: 2 },
+                                    { name: "Open Elective-IV", credits: 3 },
+                                    { name: "Advanced Communication Lab", credits: 1 },
+                                    { name: "Term Paper", credits: 1 },
+                                    { name: "Summer Internship-2", credits: 2 },
+                                    { name: "Skill Enhancement Course-7", credits: 2 }
+                                ]
+                            },
+                            {
+                                name: "Semester 8",
+                                courses: [
+                                    { name: "Internship and Project Work", credits: 12 }
+                                ]
+                            }
+                        ]
+                    }, EEE: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra and Calculus", credits: 3 },
+                                    { name: "Chemistry for Engineers", credits: 3 },
+                                    { name: "Basic Civil and Mechanical Engineering", credits: 3 },
+                                    { name: "Programming with C", credits: 4 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Programming with C Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Differential Equations, Transforms and Vector Calculus", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Electrical Circuits", credits: 4 },
+                                    { name: "Python Programming", credits: 2 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Electrical Circuits Lab", credits: 1.5 },
+                                    { name: "Python Programming Lab", credits: 1.5 },
+                                    { name: "Engineering Workshop", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 3 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    IT: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Linear Algebra, Calculus and Differential Equations", credits: 3 },
+                                    { name: "Engineering Physics", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Programming for Problem Solving", credits: 4 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1 },
+                                    { name: "Programming for Problem Solving Lab", credits: 1.5 },
+                                    { name: "Engineering Graphics", credits: 2 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+                    MECH: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Matrices and Calculus", credits: 3 },
+                                    { name: "Applied Chemistry", credits: 3 },
+                                    { name: "Basic Civil and Mechanical Engineering", credits: 3 },
+                                    { name: "Programming with C", credits: 4 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Applied Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Programming with C Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    }, CIVIL: {
+                        semesters: [
+                            {
+                                name: "Semester 1",
+                                courses: [
+                                    { name: "Matrices and Calculus", credits: 3 },
+                                    { name: "Applied Chemistry", credits: 3 },
+                                    { name: "Basic Civil and Mechanical Engineering", credits: 3 },
+                                    { name: "Programming with C", credits: 4 },
+                                    { name: "Communicative English", credits: 2 },
+                                    { name: "Applied Chemistry Lab", credits: 1 },
+                                    { name: "Communicative English Lab", credits: 1 },
+                                    { name: "Programming with C Lab", credits: 1.5 },
+                                    { name: "Health and Wellness, Yoga and Sports", credits: 0.5 }
+                                ]
+                            },
+                            {
+                                name: "Semester 2",
+                                courses: [
+                                    { name: "Differential Equations and Vector Calculus", credits: 3 },
+                                    { name: "Physics for Engineers", credits: 3 },
+                                    { name: "Basic Electrical and Electronics Engineering", credits: 3 },
+                                    { name: "Mechanics for Engineers", credits: 3 },
+                                    { name: "Engineering Physics Lab", credits: 1 },
+                                    { name: "Basic Electrical and Electronics Engineering Lab", credits: 1.5 },
+                                    { name: "Computer Aided Building Drawing", credits: 1.5 },
+                                    { name: "Engineering Workshop", credits: 1.5 },
+                                    { name: "Engineering Drawing Practice", credits: 3 }
+                                ]
+                            }
+                            // Add additional semesters as needed
+                        ]
+                    },
+
+                    // Add other departments under R24
+                }
+            }
+        
+        function displayDepartments() {
+            const regulationSelect = document.getElementById("regulationSelect");
+            const departmentSelect = document.getElementById("departmentSelect");
+            const semesterSelect = document.getElementById("semesterSelect");
+            const coursesContainer = document.getElementById("coursesContainer");
+
+            departmentSelect.innerHTML = "<option value=''>-- Select--</option>";
+            semesterSelect.innerHTML = "<option value=''>--Select--</option>";
+            coursesContainer.innerHTML = "";
+
+            if (regulationSelect.value) {
+                const selectedRegulation = regulationSelect.value;
+                const availableDepartments = Object.keys(departments[selectedRegulation]);
+
+                availableDepartments.forEach(department => {
+                    const option = document.createElement("option");
+                    option.value = department;
+                    option.textContent = department;
+                    departmentSelect.appendChild(option);
+                });
+            }
+        }
+
+        function displaySemesters() {
+            const regulationSelect = document.getElementById("regulationSelect");
+            const departmentSelect = document.getElementById("departmentSelect");
+            const semesterSelect = document.getElementById("semesterSelect");
+            const coursesContainer = document.getElementById("coursesContainer");
+            const selectedRegulation = regulationSelect.value;
+            const selectedDepartment = departmentSelect.value;
+
+            semesterSelect.innerHTML = "<option value=''>--Select--</option>";
+            coursesContainer.innerHTML = "";
+
+            if (selectedRegulation && selectedDepartment) {
+                const semesters = departments[selectedRegulation][selectedDepartment].semesters;
+                semesters.forEach(semester => {
+                    const option = document.createElement("option");
+                    option.value = semester.name;
+                    option.textContent = semester.name;
+                    semesterSelect.appendChild(option);
+                });
+            }
+        }
+
+        function displayCourses() {
+            const regulationSelect = document.getElementById("regulationSelect");
+            const departmentSelect = document.getElementById("departmentSelect");
+            const semesterSelect = document.getElementById("semesterSelect");
+            const coursesContainer = document.getElementById("coursesContainer");
+            const selectedRegulation = regulationSelect.value;
+            const selectedDepartment = departmentSelect.value;
+            const selectedSemester = semesterSelect.value;
+
+            coursesContainer.innerHTML = "";
+
+            if (selectedRegulation && selectedDepartment && selectedSemester) {
+                const semesterData = departments[selectedRegulation][selectedDepartment].semesters.find(sem => sem.name === selectedSemester);
+                let tableHTML = `<table border="1"><tr><th>Course</th><th>Credits</th><th>Grade</th></tr>`;
+
+                semesterData.courses.forEach(course => {
+                    tableHTML += `<tr>
+                        <td>${course.name}</td>
+                        <td>${course.credits}</td>
+                        <td>
+                            <select>
+                                <option value="">--Select--</option>
+                                ${Object.keys(gradePoints).map(grade => `<option value="${grade}">${grade}</option>`).join('')}
+                            </select>
+                        </td>
+                    </tr>`;
+                });
+
+                tableHTML += `</table>
+                    <button onclick="calculateSGPA('${selectedRegulation}', '${selectedDepartment}', '${selectedSemester}')">Calculate SGPA</button>
+                    <div class="result">SGPA: <span id="sgpaResult">-</span></div>`;
+                coursesContainer.innerHTML = tableHTML;
+            }
+        }
+
+        function calculateSGPA(regulation, department, semester) {
+            const coursesContainer = document.getElementById("coursesContainer");
+            const rows = coursesContainer.getElementsByTagName("tr");
+            let totalCredits = 0;
+            let totalGradePoints = 0;
+
+            for (let i = 1; i < rows.length; i++) {
+                const credits = parseFloat(rows[i].cells[1].textContent);
+                const grade = rows[i].cells[2].querySelector("select").value;
+
+                if (!grade) {
+                    alert("Please select grades for all courses.");
+                    return;
+                }
+
+                const gradePoint = gradePoints[grade];
+                totalCredits += credits;
+                totalGradePoints += credits * gradePoint;
+            }
+
+            if (totalCredits === 0) {
+                alert("Total credits cannot be zero. Please check your inputs.");
+                return;
+            }
+
+            const sgpa = totalGradePoints / totalCredits;
+            document.getElementById("sgpaResult").textContent = sgpa.toFixed(2);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const regulationSelect = document.getElementById("regulationSelect");
+            const departmentSelect = document.getElementById("departmentSelect");
+            const semesterSelect = document.getElementById("semesterSelect");
+
+            regulationSelect.addEventListener("change", displayDepartments);
+            departmentSelect.addEventListener("change", displaySemesters);
+            semesterSelect.addEventListener("change", displayCourses);
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>SGPA Calculator</h1>
+        <label for="regulationSelect">Select Regulation:</label>
+        <select id="regulationSelect">
+            <option value="">--Select --</option>
+            <option value="R20">R-20</option>
+            <option value="R24">R-24</option>
+        </select>
+
+        <label for="departmentSelect">Select Department:</label>
+        <select id="departmentSelect">
+            <option value="">--Select--</option>
+        </select>
+
+        <label for="semesterSelect">Select Semester:</label>
+        <select id="semesterSelect">
+            <option value="">--Select--</option>
+        </select>
+
+        <div id="coursesContainer">
+            <p>Please select a regulation, department, and semester to view courses.</p>
+        </div>
+    </div>
+</body>
+
+</html>
